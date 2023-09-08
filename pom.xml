@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.meerkat</groupId>
-	<artifactId>security</artifactId>
+	<artifactId>SpringSecurity</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SpringSecurity</name>
 	<description>Spring Security Project</description>

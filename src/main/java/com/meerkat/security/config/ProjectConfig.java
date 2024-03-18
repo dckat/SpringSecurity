@@ -3,6 +3,8 @@ package com.meerkat.security.config;
 import org.springframework.cglib.proxy.NoOp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,7 +15,42 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 
-/* 기본 구성 클래스 정의
+@Configuration
+public class ProjectConfig extends WebSecurityConfigurerAdapter {
+
+    // PasswordEncoder를 빈으로 설계
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        // 사용자를 인메모리에 저장하기 위한 UserDetailsService 선언
+        var userDetailsService = new InMemoryUserDetailsManager();
+
+        // 사용자 정의
+        var user = User.withUsername("kim")
+                .password("test")
+                .authorities("read")
+                .build();
+
+        userDetailsService.createUser(user);
+
+        auth.userDetailsService(userDetailsService);
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.httpBasic();
+
+        http.authorizeRequests()
+                .anyRequest().authenticated();  // 모든 요청에 인증
+    }
+}
+
+/* 기본 구성 클래스 정의 (실행 시 위 클래스 주석 처리 후 해당 클래스 주석 제거)
 @Configuration
 public class ProjectConfig {
 
@@ -40,20 +77,3 @@ public class ProjectConfig {
     }
 }
 */
-
-@Configuration
-public class ProjectConfig extends WebSecurityConfigurerAdapter {
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic();
-
-        /* 모든 요청 인증
-        http.authorizeRequests()
-                .anyRequest().authenticated();
-        */
-
-        http.authorizeRequests()
-                .anyRequest().permitAll(); // 인증없이 요청 가능
-    }
-}

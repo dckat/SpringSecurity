@@ -1,5 +1,7 @@
 package com.meerkat.ss.config;
 
+import com.meerkat.ss.security.CustomAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,6 +13,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 
+// AuthenticationProvider 활용한 구성 클래스
+@Configuration
+public class ProjectConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private CustomAuthenticationProvider authenticationProvider;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider);
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.httpBasic();
+        http.authorizeRequests().anyRequest().authenticated();
+    }
+}
+
+/* UserDetailsService.PasswordEncoder 정의 예제 클래스
 @Configuration
 public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
@@ -45,8 +67,9 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();  // 모든 요청에 인증
     }
 }
+*/
 
-/* 기본 구성 클래스 정의 (실행 시 위 클래스 주석 처리 후 해당 클래스 주석 제거)
+/* 기본 구성 정의 예제 클래스
 @Configuration
 public class ProjectConfig {
 

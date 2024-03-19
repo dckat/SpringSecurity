@@ -1,4 +1,4 @@
-package com.meerkat.security;
+package com.meerkat.ss;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

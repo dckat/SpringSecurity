@@ -1,19 +1,43 @@
 package com.meerkat.ss.config;
 
+import com.meerkat.ss.domain.User;
 import com.meerkat.ss.security.CustomAuthenticationProvider;
+import com.meerkat.ss.service.InMemoryUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.proxy.NoOp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import java.util.List;
 
-// AuthenticationProvider 활용한 구성 클래스
+
+@Configuration
+public class ProjectConfig {
+
+    // 커스터마이징한 UserDetailsService를 빈으로 등록
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails u = new User("kim", "test", "read");
+        List<UserDetails> users = List.of(u);
+        return new InMemoryUserDetailsService(users);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+}
+
+
+/* AuthenticationProvider 활용한 구성 클래스
 @Configuration
 public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
@@ -31,6 +55,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
     }
 }
+*/
 
 /* UserDetailsService.PasswordEncoder 정의 예제 클래스
 @Configuration

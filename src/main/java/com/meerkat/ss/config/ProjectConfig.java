@@ -15,19 +15,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 
 @Configuration
 public class ProjectConfig {
 
-    // 커스터마이징한 UserDetailsService를 빈으로 등록
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails u = new User("kim", "test", "read");
-        List<UserDetails> users = List.of(u);
-        return new InMemoryUserDetailsService(users);
+    public UserDetailsService userDetailsService(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean

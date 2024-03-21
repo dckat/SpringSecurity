@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.ldap.DefaultLdapUsernameToDnMapper;
+import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.ldap.userdetails.LdapUserDetailsManager;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
@@ -24,9 +27,30 @@ import java.util.List;
 @Configuration
 public class ProjectConfig {
 
+    /* JDBC
     @Bean
     public UserDetailsService userDetailsService(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
+    }
+    */
+
+    // LDAP
+    @Bean
+    public UserDetailsService userDetailsService() {
+        var cs = new DefaultSpringSecurityContextSource(
+                "ldap://localhost:33389/dc=springframework,dc=org"
+        );
+        cs.afterPropertiesSet();
+
+        var manager = new LdapUserDetailsManager(cs);
+
+        manager.setUsernameMapper(
+                new DefaultLdapUsernameToDnMapper("ou=groups", "uid")
+        );
+
+        manager.setGroupSearchBase("ou=groups");
+
+        return manager;
     }
 
     @Bean

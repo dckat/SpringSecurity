@@ -78,6 +78,7 @@
         * 솔트 길이
   * DelegatingPasswordEncoder
     * 암호의 접두사를 기준으로 PasswordEncoder 구현에 작업 위임
+      ![delegatingpasswordencoder](https://github.com/dckat/SpringSecurity/assets/19167273/4cdc577f-2c0d-45f4-9828-7c70e80d2fa0)
       * BCryptPasswordEncoder, SCryptPasswordEncoder는 다른 접두사 인코더를 위한 참조로 가짐
       * matches 메소드 호출 시 지정된 PasswordEncoder에 위임
 ***
@@ -139,7 +140,6 @@
             byte[] decrypt(byte[] encryptedArray);
         }          
         ```
-             * 주요 형식
      * TextEncryptors의 주요 형식
        * Encryptors.text(): standard() 메소드로 암호화 작업 관리
        * Encryptors.delux(): stronger() 인스턴스를 활용

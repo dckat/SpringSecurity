@@ -1,5 +1,5 @@
 # 4. 암호처리
- # PasswordEncoder
+ ## PasswordEncoder
   * PasswordEncoder 정의
     ```
     public interface PasswordEncoder {
@@ -76,3 +76,73 @@
         * 병렬화 갯수
         * 키의 길이
         * 솔트 길이
+  * DelegatingPasswordEncoder
+    * 암호의 접두사를 기준으로 PasswordEncoder 구현에 작업 위임
+      * BCryptPasswordEncoder, SCryptPasswordEncoder는 다른 접두사 인코더를 위한 참조로 가짐
+      * matches 메소드 호출 시 지정된 PasswordEncoder에 위임
+***
+ ## 스프링 시큐리티 암호화 모듈
+   * 키 생성기
+     * 특정한 종류의 키를 생성하는 객체. 암호화나 해싱 알고리즘에 필요
+     * 종류
+       1) StringKeyGenerator
+          * 문자열 키 생성기를 생성
+          * 일반적으로 해싱 또는 암호화 알고리즘의 솔트값으로 이용
+          * 8바이트의 키를 생성하여 16진수의 문자열로 인코딩
+          * 정의
+          ```
+          public interface StringKeyGenerator {
+          
+            String generateKey();
+          
+          }
+          ```
+       2) BytesKeyGenerator
+          * 정의
+          ```
+          public interface BytesKeyGenerator {
+          
+            int getKeyLength();    // 키 길이를 반환하는 메소드가 추가 존재
+            byte[] generateKey();
+          
+          }          
+          ```
+          * 기본적으로 8바이트 길이의 키를 생성
+            * KeyGenerators.secureRandom() 메소드에 원하는 값을 넣어 키 길이를 지정
+          * KeyGenerators.shared() 메소드를 통해 같은 키 반환
+            ```
+            BytesKeyGenerator keyGenerator = KeyGenerators.shared(16);
+            
+            // key1과 key2가 같은 키 값을 가짐
+            byte[] key1 = keyGenerator.generateKey();
+            byte[] key2 = keyGenerator.geterateKey();
+            ```
+   * 암호화.복호화 작업에 암호기 이용
+     1) TextEncryptor
+        * 데이터를 문자열로 관리. 문자열을 입력으로 받고 출력으로 반환
+        * 정의
+          ```
+          public interface TextEncryptor {
+          
+            String encrypt(String text);
+            String decrypt(String encryptedText);
+          
+          }          
+          ```
+     2) BytesEncryptor
+        * 데이터를 바이트 배열로 관리
+        * 내부적으로 256바이트 AES를 이용하여 입력을 암호화
+        * 정의
+        ```
+        public interface BytesEncryptor {
+            byte[] encrypt(byte[] byteArray);
+            byte[] decrypt(byte[] encryptedArray);
+        }          
+        ```
+             * 주요 형식
+     * TextEncryptors의 주요 형식
+       * Encryptors.text(): standard() 메소드로 암호화 작업 관리
+       * Encryptors.delux(): stronger() 인스턴스를 활용
+       * Encryptors.queryableText(): 순차 암호화 작업에서 입력이 같으면 같은 출력이 나오도록 보장
+       * Encryptors.noOpText(): 암호화하지 않는 더미 암호기 반환
+***

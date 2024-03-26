@@ -1,5 +1,6 @@
 # 5. 인증 구현
  ## 스프링 시큐리티 인증 흐름
+   ![인증 프로세스](https://github.com/dckat/SpringSecurity/assets/19167273/a6877a9d-dcbb-4d3d-a66d-5e96812bdb60)
    1) 인증 필터가 요청을 가로챔
    2) 인증 책임이 AuthenticationManager에 위임
    3) AuthenticationManager는 인증 논리를 구현한 AuthenticationProvider를 이용
@@ -50,3 +51,6 @@
          * authenticate 메소드를 재정의하여 인증 논리 구현
       3) 구현한 AuthenticationProvider의 인스턴스를 스프링 시큐리티에 등록
     * 인증 흐름도
+      ![인증 논리 흐름](https://github.com/dckat/SpringSecurity/assets/19167273/91c509ac-2218-46e8-b475-28dac51d6dac)
+
+      

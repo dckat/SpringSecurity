@@ -30,7 +30,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     // 인증 형식 구현
     @Override
     public boolean supports(Class<?> authenticationType) {
-        return UsernamePasswordAuthenticationToken.class
-                .isAssignableFrom(authenticationType);
+        return authenticationType.equals(UsernamePasswordAuthenticationToken.class);
     }
 }

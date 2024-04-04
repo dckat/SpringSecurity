@@ -2,6 +2,7 @@ package com.meerkat.ss.controller;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.concurrent.DelegatingSecurityContextCallable;
+import org.springframework.security.concurrent.DelegatingSecurityContextExecutorService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +44,23 @@ public class HelloController {
         try {
             var contextTask = new DelegatingSecurityContextCallable<>(task);
             return "Ciao, " + executorService.submit(contextTask).get() + "!";
+        } finally {
+            executorService.shutdown();
+        }
+    }
+
+    @GetMapping("/hola")
+    public String hola() throws Exception {
+        Callable<String> task = () -> {
+            SecurityContext context = SecurityContextHolder.getContext();
+            return context.getAuthentication().getName();
+        };
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService = new DelegatingSecurityContextExecutorService(executorService);
+
+        try {
+            return "Hola, " + executorService.submit(task).get() + "!";
         } finally {
             executorService.shutdown();
         }

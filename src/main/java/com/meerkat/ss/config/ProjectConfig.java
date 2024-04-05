@@ -26,7 +26,9 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
         http
                 .formLogin()
                         .successHandler(authenticationSuccessHandler)
-                                .failureHandler(authenticationFailureHandler);
+                                .failureHandler(authenticationFailureHandler)
+                                        .and()
+                                                .httpBasic();
 
         http.authorizeRequests().anyRequest().authenticated();
     }

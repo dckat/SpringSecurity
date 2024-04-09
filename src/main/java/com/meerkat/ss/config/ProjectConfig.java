@@ -24,12 +24,12 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         var manager = new InMemoryUserDetailsManager();
 
-        var user1 = User.withUsername("Kim")
+        var user1 = User.withUsername("kim")
                 .password("test")
                 .authorities("READ")
                 .build();
 
-        var user2 = User.withUsername("Park")
+        var user2 = User.withUsername("park")
                 .password("test")
                 .authorities("WRITE")
                 .build();
@@ -51,7 +51,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .anyRequest()
-                .hasAuthority("WRITE");     // WRITE 권한이 있는 사용자만 엔드포인트 접근
+                .hasAnyAuthority("WRITE", "READ");    // WRITE 권한이 있는 사용자만 엔드포인트 접근
     }
 
     /*

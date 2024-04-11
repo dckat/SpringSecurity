@@ -31,7 +31,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
         var user2 = User.withUsername("park")
                 .password("test")
-                .roles("MANANGER")
+                .roles("MANAGER")
                 .build();
 
         manager.createUser(user1);

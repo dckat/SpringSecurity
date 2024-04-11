@@ -26,12 +26,12 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
         var user1 = User.withUsername("kim")
                 .password("test")
-                .authorities("READ")
+                .roles("ADMIN")
                 .build();
 
         var user2 = User.withUsername("park")
                 .password("test")
-                .authorities("WRITE")
+                .roles("MANANGER")
                 .build();
 
         manager.createUser(user1);
@@ -49,9 +49,11 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic();
 
+
+        // ADMIN 역할만 /hello 호출하고 MANAGER 역할만 /ciao 호출 가능
         http.authorizeRequests()
-                .anyRequest()
-                .hasAnyAuthority("WRITE", "READ");    // WRITE 권한이 있는 사용자만 엔드포인트 접근
+                .mvcMatchers("/hello").hasRole("ADMIN")
+                .mvcMatchers("/ciao").hasRole("MANAGER");
     }
 
     /*

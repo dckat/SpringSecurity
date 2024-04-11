@@ -50,8 +50,13 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic();
 
+        http.authorizeRequests()
+                .mvcMatchers("/product/{code:^[0-9]*$}")    // 길이와 관계없이 숫자를 포함한 문자열을 표현한 정규식
+                .permitAll()
+                .anyRequest()
+                .denyAll();
 
-        // ADMIN 역할만 /hello 호출하고 MANAGER 역할만 /ciao 호출 가능
+        /*
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/a")
                 .authenticated()    // HTTP GET 방식으로 /a 요청시 사용자 인증
@@ -61,6 +66,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
                 .denyAll();         // 다른 경로에 대한 요청 거부
 
         http.csrf().disable();  // HTTP POST 방식으로 /a 호출하도록 CSRF 비활성화
+        */
     }
 
     /*

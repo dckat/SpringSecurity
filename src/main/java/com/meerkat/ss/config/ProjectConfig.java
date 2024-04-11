@@ -4,6 +4,7 @@ import com.meerkat.ss.service.AuthenticationProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -52,8 +53,14 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
         // ADMIN 역할만 /hello 호출하고 MANAGER 역할만 /ciao 호출 가능
         http.authorizeRequests()
-                .mvcMatchers("/hello").hasRole("ADMIN")
-                .mvcMatchers("/ciao").hasRole("MANAGER");
+                .mvcMatchers(HttpMethod.GET, "/a")
+                .authenticated()    // HTTP GET 방식으로 /a 요청시 사용자 인증
+                .mvcMatchers(HttpMethod.POST, "/a")
+                .permitAll()        // HTTP POST 방식으로 /a 요청시 모두 허용
+                .anyRequest()
+                .denyAll();         // 다른 경로에 대한 요청 거부
+
+        http.csrf().disable();  // HTTP POST 방식으로 /a 호출하도록 CSRF 비활성화
     }
 
     /*

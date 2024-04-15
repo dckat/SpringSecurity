@@ -44,3 +44,21 @@
      * /a/**: 여러 경로의 이름을 대체. /a, /a/b, /a/b/c 모두 일치
      * /a/{param}: 주어진 경로 매개 변수를 포함한 /a에 적용
      * /a/{param:regex}: 매개변수 값과 정규식이 일치할 때만 매개변수를 포함한 /a에 적용
+***
+ ## 8.3 앤트 선택기로 권한을 부여할 요청 선택
+   * antMatchers 메소드
+     * antMatchers(HttpMethod, String): 제한을 적용할 HTTP 방식과 경로를 참조할 앤트 패턴 지정
+     * antMatchers(String): 경로만을 기준으로 권한 부여 제한 적용
+     * antMatchers(HttpMethod): 경로에 관계없이 특정 HTTP 방식에 대한 제한 적용
+   * MVC 선택기와 차이점
+     * MVC: 여러 경로가 동일한 작업과 일치한다고 해석
+       * ex) /hello. /hello/를 같은 규칙으로 모두 보호가 됨
+     * 앤트: 위의 예시를 의도치 않게 보호하지 않도록 지정 가능
+***
+ ## 8.4 정규식 선택기로 권한을 부여할 요청 선택
+   * regexMatchers 메소드
+     * regexMatchers(HttpMethod, String): 제한을 적용할 HTTP 방식과 경로를 참조할 정규식 지정
+     * regexMatchers(String): 경로만을 기준으로 권한 부여 제한 적용
+   * 사용 예시
+     * 전화번호 또는 이메일 주소 등이 포함된 경로의 특정한 구성
+     * 특정 형식이 포함된 모든 경로의 특정한 구성

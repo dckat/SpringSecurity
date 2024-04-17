@@ -1,5 +1,6 @@
 package com.meerkat.ss.config;
 
+import com.meerkat.ss.filter.AuthenticationLoggingFilter;
 import com.meerkat.ss.filter.RequestValidationFilter;
 import com.meerkat.ss.service.AuthenticationProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(
                 new RequestValidationFilter(),
                 BasicAuthenticationFilter.class)
+                .addFilterAfter(
+                        new AuthenticationLoggingFilter(),
+                        BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .anyRequest().permitAll();
     }

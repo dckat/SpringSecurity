@@ -1,5 +1,6 @@
 package com.meerkat.ss.config;
 
+import com.meerkat.ss.filter.StaticKeyAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +20,11 @@ public class AppConfig implements AuthenticationProvider {
     @Bean
     public SCryptPasswordEncoder sCryptPasswordEncoder() {
         return new SCryptPasswordEncoder();
+    }
+
+    @Bean
+    public StaticKeyAuthenticationFilter staticKeyAuthenticationFilter() {
+        return new StaticKeyAuthenticationFilter();
     }
 
     @Override

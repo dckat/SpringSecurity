@@ -2,18 +2,19 @@ package com.meerkat.ss.controller;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
 
     @GetMapping("/hello")
-    public String hello() {
-        return "hello";
+    public String getHello() {
+        return "Get Hello";
     }
 
-    @GetMapping("/ciao")
-    public String ciao() {
-        return "ciao";
+    @PostMapping("/hello")
+    public String postHello() {
+        return "Post Hello";
     }
 }

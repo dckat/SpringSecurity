@@ -27,6 +27,33 @@ import org.springframework.security.web.csrf.CsrfFilter;
 @Configuration
 public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
+    @Bean
+    public UserDetailsService userDetailsService() {
+        var uds = new InMemoryUserDetailsManager();
+
+        var u1 = User.withUsername("kim")
+                .password("12345")
+                .authorities("READ")
+                .build();
+
+        return uds;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .anyRequest().authenticated();
+
+        http.formLogin()
+                .defaultSuccessUrl("/main", true);
+    }
+
+    /* CSRF 토큰 로깅을 위한 메소드
     @Override
     protected void configure(HttpSecurity http) throws Exception{
 
@@ -34,6 +61,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().permitAll();
     }
+    */
 
     /*
     @Autowired

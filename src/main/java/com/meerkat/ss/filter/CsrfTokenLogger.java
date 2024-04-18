@@ -18,7 +18,7 @@ public class CsrfTokenLogger implements Filter {
         Object o = request.getAttribute("_csrf");
         CsrfToken token = (CsrfToken) o;
 
-        logger.info("CSRF token" + token.getToken());
+        logger.info("CSRF token " + token.getToken());
 
         filterChain.doFilter(request, response);
     }

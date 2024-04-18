@@ -1,6 +1,7 @@
 package com.meerkat.ss.config;
 
 import com.meerkat.ss.filter.AuthenticationLoggingFilter;
+import com.meerkat.ss.filter.CsrfTokenLogger;
 import com.meerkat.ss.filter.RequestValidationFilter;
 import com.meerkat.ss.filter.StaticKeyAuthenticationFilter;
 import com.meerkat.ss.service.AuthenticationProviderService;
@@ -20,34 +21,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 
 @Configuration
 public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private StaticKeyAuthenticationFilter filter;
-
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterAt(filter, BasicAuthenticationFilter.class)
+    protected void configure(HttpSecurity http) throws Exception{
+
+        http.addFilterAfter(new CsrfTokenLogger(), CsrfFilter.class)
                 .authorizeRequests()
                 .anyRequest().permitAll();
     }
-
-    /* 기존 필터의 앞.뒤로 필터를 구성한 메소드 예시
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(
-                new RequestValidationFilter(),
-                BasicAuthenticationFilter.class)
-                .addFilterAfter(
-                        new AuthenticationLoggingFilter(),
-                        BasicAuthenticationFilter.class)
-                .authorizeRequests()
-                .anyRequest().permitAll();
-    }
-    */
 
     /*
     @Autowired

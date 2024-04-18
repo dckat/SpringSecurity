@@ -23,6 +23,8 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
                 .authorities("READ")
                 .build();
 
+        uds.createUser(u1);
+
         return uds;
     }
 

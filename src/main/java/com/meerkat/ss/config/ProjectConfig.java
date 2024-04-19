@@ -1,5 +1,6 @@
 package com.meerkat.ss.config;
 
+import com.meerkat.ss.repository.CustomCsrfTokenRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,11 +10,30 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 
 @Configuration
 public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        return new CustomCsrfTokenRepository();
+    }
+
+    // CSRF 맞춤형 보호 사용
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf(c -> {
+            c.csrfTokenRepository(csrfTokenRepository());
+            c.ignoringAntMatchers("/ciao");
+        });
+
+        http.authorizeRequests()
+                .anyRequest().permitAll();
+    }
+
+    /* CSRF 보호 사용 예제 코드
     @Bean
     public UserDetailsService userDetailsService() {
         var uds = new InMemoryUserDetailsManager();
@@ -41,6 +61,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .defaultSuccessUrl("/main", true);
     }
+    */
 
     /* CSRF 토큰 로깅을 위한 메소드
     @Override

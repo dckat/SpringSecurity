@@ -17,4 +17,9 @@ public class HelloController {
     public String postHello() {
         return "Post Hello";
     }
+
+    @PostMapping("/ciao")
+    public String postCiao() {
+        return "Post Ciao";
+    }
 }

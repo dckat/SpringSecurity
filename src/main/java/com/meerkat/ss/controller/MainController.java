@@ -2,6 +2,7 @@ package com.meerkat.ss.controller;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +22,7 @@ public class MainController {
     // CORS 작동 확인 테스트 메소드
     @PostMapping("/test")
     @ResponseBody
+    @CrossOrigin("http://localhost:8080")
     public String test() {
         logger.info("Test 메소드 호출");
         return "Hello";

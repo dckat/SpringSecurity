@@ -16,6 +16,15 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 @Configuration
 public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+
+        http.authorizeRequests()
+                .anyRequest().permitAll();
+    }
+
+    /* JPA 활용 CSRF 토큰 구현 예제
     @Bean
     public CsrfTokenRepository csrfTokenRepository() {
         return new CustomCsrfTokenRepository();
@@ -32,6 +41,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .anyRequest().permitAll();
     }
+    */
 
     /* CSRF 보호 사용 예제 코드
     @Bean

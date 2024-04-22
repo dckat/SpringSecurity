@@ -16,3 +16,39 @@
       * ex) 생성된 토큰을 HTTP 요청의 _csrf 특성에 추가
     * CsrfTokenLogger: CSRF 토큰을 출력하는 맞춤형 필터
 ***
+ ## 10.2 CORS 이용
+  * CORS(Cross-Origin Resource Sharing)
+    * 웹 페이지 상의 제한된 리소스를 최초 자원이 서비스된 도메인 밖의 다른 도메인으로부터 요청할 수 있게 허용하는 구조
+    * 출처 이미지. 스타일시트. 스크립트 등을 자유롭게 임베드 가능
+    * 작동방식
+      * 비활성화 (이미지 추가 필요)
+      * 활성화 (이미지 추가 필요)
+    * CORS 주요 헤더
+      * Access-Control-Allow-Origin: 도메인 리소스에 접근가능한 외부 도메인 지정
+      * Access-Control-Allow-Methods: 특정 HTTP Method 방식만 허용할 시 지정
+      * Access-Control-Allow-Headers: 특정 요청에 이용가능한 헤더에 제한 추가
+  * CORS 적용 방식
+    * CrossOrigin 어노테이션 활용
+      * 엔드포인트 정의 메소드에 어노테이션을 배치하여 허용된 출처 지정
+      * 매개 변수로 여러 출처를 정의하는 배열을 지정
+        * ex) @CrossOrigin({"example.com", "example.org"})
+      * 장.단점
+        * 장점: 직접 규칙을 지정하여 투명한 규칙이 가능
+        * 단점: 각 메소드별로 지정해야 하므로 많은 코드 반복이 필요하고 추후 유지보수에 어려움
+    * CorsConfigurer 활용
+      * CORS 설정을 하나의 구성클래스에 집중하여 설정
+      * cors() 메소드를 활용하여 CORS 구성 정의
+      * cors 구성 예시 코드 (람다 함수 활용)
+        ```
+        http.cors(c -> {
+            CorsConfigurationSource source = request -> {
+                // CORS 설정
+                Corsconfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(List.of("example.com", "example.org"));
+                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                return config;
+            }
+        });
+        ```
+      * 직접 어노테이션을 지정하는 방식보다 하나의 클래스에서 지정하여 유지보수 용이하는 장점 존재
+***

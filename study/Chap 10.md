@@ -21,8 +21,10 @@
     * 웹 페이지 상의 제한된 리소스를 최초 자원이 서비스된 도메인 밖의 다른 도메인으로부터 요청할 수 있게 허용하는 구조
     * 출처 이미지. 스타일시트. 스크립트 등을 자유롭게 임베드 가능
     * 작동방식
-      * 비활성화 (이미지 추가 필요)
-      * 활성화 (이미지 추가 필요)
+      * 비활성화
+        ![cors_block](https://github.com/dckat/SpringSecurity/assets/19167273/47bc26f7-8921-44c5-a9c2-3bff5bf2d704)
+      * 활성화
+        ![cors](https://github.com/dckat/SpringSecurity/assets/19167273/cf7b9463-6ab7-4205-b561-16064f177353)
     * CORS 주요 헤더
       * Access-Control-Allow-Origin: 도메인 리소스에 접근가능한 외부 도메인 지정
       * Access-Control-Allow-Methods: 특정 HTTP Method 방식만 허용할 시 지정

@@ -15,6 +15,7 @@
 	<description>Spring Security Project</description>
 	<properties>
 		<java.version>17</java.version>
+		<spring-cloud.version>2021.0.3</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -61,7 +62,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Hoxton.SR1</version>
+				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
